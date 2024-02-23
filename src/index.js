@@ -5,9 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+root.render( // Add this content to the div with id = "root" on index.html
   <React.StrictMode>
-    <App />
+    <App /> 
   </React.StrictMode>
 );
 
