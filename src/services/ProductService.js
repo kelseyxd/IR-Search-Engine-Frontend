@@ -12,7 +12,7 @@ class ProductService{
 
 
     searchProduct(product){
-        return axios.get(BASE_API + "/matchAllProducts/" , product)
+        return axios.get(BASE_API + "/matchAllProducts/" + product)
     ;
   
     }
