@@ -33,6 +33,17 @@ class ListProducts extends Component {
     };
 
     render() {
+        // Create a new Set to track unique product names
+        const uniqueProductNames = new Set();
+        const uniqueProducts = this.state.products.filter(product => {
+            if (uniqueProductNames.has(product.name)) {
+                return false; // If we have, skip this product
+            } else {
+                uniqueProductNames.add(product.name); // Otherwise, add it to the Set and keep the product
+                return true;
+            }
+        });
+
         return (
             <div className="row" style={{ margin: "80px 50px 20px 50px"}}>
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px"}}>       
@@ -51,15 +62,14 @@ class ListProducts extends Component {
                 </div>
                 {this.state.showNoResultsMessage && <p>There are no documents matching your search</p>}
                 {   
-                    this.state.products.map(product => (
-                        <Link to={`/product/${product.name}`} style={{ textDecoration: 'none', color: 'inherit' }} key={product.name}>
+                    uniqueProducts.map(product => (
+                        <Link to={`/product/${product.name}/${product.category}/${product.price}`} style={{ textDecoration: 'none', color: 'inherit' }} key={product.name}>
                             <div key={product.id} className="row mb-3">
                                 <div className="col-3">
                                     <img className="img-fluid" src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-15-9530/media-gallery/touch-black/notebook-xps-15-9530-t-black-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&hei=402&wid=654&qlt=100,1&resMode=sharp2&size=654,402&chrss=full" alt={product.name} /> 
                                 </div>
                                 <div className="col-8">
                                     <h5 style={{textAlign : "left"}}>{product.name}</h5>
-                                    <p style={{textAlign : "left"}}>Review: {product.content}</p> 
                                     <p style={{textAlign : "left"}}>Category: {product.category}</p>
                                 </div>
                                 <div className="col-1">
