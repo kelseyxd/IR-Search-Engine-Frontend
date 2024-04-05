@@ -17,6 +17,12 @@ class ProductService{
   
     }
 
+    searchProductId(product_id){
+        return axios.get(BASE_API + "/matchProductId/" + product_id)
+    ;
+  
+    }
+
     // ins ertProduct(product){
     //     return axios.post(BASE_API + "/insert" , product)
     // ;
