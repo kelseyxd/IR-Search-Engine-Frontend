@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import ProductService from '../services/ProductService';
-import IconButton from '@mui/material/IconButton';
+import { Pagination, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom'; // Import Link
 
@@ -11,7 +11,9 @@ class ListProducts extends Component {
     super(props);
         this.state = {
             products:[], // create an array 
-            searchInput:""
+            searchInput:"",
+            currentPage: 1,
+            pageCount: 0
         }
     }
 
@@ -20,17 +22,41 @@ class ListProducts extends Component {
         const { searchInput } = this.state; // shorthand for const searchInput = this.state.searchInput
         console.log('Searching for:', searchInput);
 
-        ProductService.searchProduct(searchInput).then(response => { 
+        ProductService.searchProduct(searchInput, 1).then(response => { 
             // console.log(response.data);
             // console.log(response.data.length)
             if (response.data.length === 0) {
-                this.setState({ products: [], showNoResultsMessage: true }); // Update state to show no results message
+                this.setState({ products: [], currentPage: 1, showNoResultsMessage: true }); // Update state to show no results message
             } else {
-                this.setState({ products: response.data, showNoResultsMessage: false }); // Update state with products and hide no results message
+                this.setState({ products: response.data, currentPage: 1, showNoResultsMessage: false }); // Update state with products and hide no results message
             } // set the products array with the response
         })
+
+        this.getPageCount();
     
     };
+
+    changePage = (event, page) => {
+        const { searchInput } = this.state;
+        ProductService.searchProduct(searchInput, page).then(response => { 
+            if (response.data.length === 0) {
+                this.setState({ products: [], showNoResultsMessage: true }); // Update state to show no results message
+            } else {
+                this.setState({ products: response.data, currentPage: page, showNoResultsMessage: false }); // Update state with products and hide no results message
+            } // set the products array with the response
+        })
+    }
+
+    getPageCount = () => {
+        const { searchInput } = this.state;
+        ProductService.searchProduct(searchInput, 1, 25).then(response => { 
+            if (response.data.length < 25) {
+                this.setState({ pageCount: Math.ceil(response.data.length / 5)}); // Update state to show no results message
+            } else {
+                this.setState({ pageCount: 5 }); // Update state with products and hide no results message
+            } // set the products array with the response
+        })
+    }
 
     render() {
         return (
@@ -68,6 +94,7 @@ class ListProducts extends Component {
                         </Link>
                     ))
                 }
+                <Pagination count={this.state.pageCount} page={this.state.currentPage} onChange={this.changePage}/>
             </div>
         );
     }

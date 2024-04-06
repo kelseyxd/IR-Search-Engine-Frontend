@@ -11,8 +11,15 @@ class ProductService{
     }
 
 
-    searchProduct(product){
-        return axios.get(BASE_API + "/matchAllProducts/" + product)
+    searchProduct(product, page=1, size=5){
+        return axios.get(BASE_API + "/matchAllProducts/" + product,
+        {
+            params: {
+              page: page,
+              size: size
+            },
+          }
+        )
     ;
   
     }
