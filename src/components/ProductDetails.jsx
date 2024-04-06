@@ -64,10 +64,11 @@ const ProductDetails = () => {
                     <div className="col-2">
                         {/* Date Range Filters */}
                         <div className="date-filters">
-                            <label>Start Date:</label>
+                            <label>Start:</label>
+                            <br></br>
                             <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                             <br></br>
-                            <label style={{marginTop: '10px'}}>End Date:</label>
+                            <label style={{marginTop: '10px'}}>End:</label>
                             <br></br>
                             <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                         </div>

@@ -30,6 +30,19 @@ class ProductService{
   
     }
 
+    searchProductCat(category, page=1, size=5){
+        return axios.get(BASE_API + "/matchProductCat/" + category,
+        {
+            params: {
+              page: page,
+              size: size
+            },
+          }
+        )
+    ;
+  
+    }
+
     // ins ertProduct(product){
     //     return axios.post(BASE_API + "/insert" , product)
     // ;

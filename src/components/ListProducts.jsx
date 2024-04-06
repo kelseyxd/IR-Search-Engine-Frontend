@@ -22,14 +22,40 @@ class ListProducts extends Component {
         const { searchInput } = this.state; // shorthand for const searchInput = this.state.searchInput
         console.log('Searching for:', searchInput);
 
-        ProductService.searchProduct(searchInput, 1).then(response => { 
-            // console.log(response.data);
-            // console.log(response.data.length)
+        if (searchInput != ""){
+            ProductService.searchProduct(searchInput, 1).then(response => { 
+                // console.log(response.data);
+                // console.log(response.data.length)
+                if (response.data.length === 0) {
+                    this.setState({ products: [], currentPage: 1, showNoResultsMessage: true }); // Update state to show no results message
+                } else {
+                    this.setState({ products: response.data, currentPage: 1, showNoResultsMessage: false }); // Update state with products and hide no results message
+                } // set the products array with the response
+            })
+    
+            this.getPageCount();
+        }   
+    };
+
+    handleCategoryChange = (event) => {
+        const category = event.target.value;
+        this.setState({ searchInput: category }, () => {
+            if (category != ""){
+                this.categorySearch(); // Perform search after state is updated
+            }
+        });
+    };
+    
+    categorySearch = () => {
+        const { searchInput } = this.state; 
+        console.log('Searching for:', searchInput);
+
+        ProductService.searchProductCat(searchInput, 1).then(response => { 
             if (response.data.length === 0) {
                 this.setState({ products: [], currentPage: 1, showNoResultsMessage: true }); // Update state to show no results message
             } else {
                 this.setState({ products: response.data, currentPage: 1, showNoResultsMessage: false }); // Update state with products and hide no results message
-            } // set the products array with the response
+            } 
         })
 
         this.getPageCount();
@@ -61,7 +87,21 @@ class ListProducts extends Component {
     render() {
         return (
             <div className="row" style={{ margin: "80px 50px 20px 50px"}}>
+
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px"}}>       
+                    
+                    {/* Category Dropdown Search */}
+                    <select
+                        style={{ marginRight:"20px", padding:"7px"}}
+                        value={this.state.searchInput}
+                        onChange={this.handleCategoryChange}
+                    >
+                        <option value="">Select a Category</option>
+                        <option value="kit">Kit</option>
+                        <option value="tools">Tools</option>
+                    </select>
+
+                    {/* Product Search */}
                     <input
                         style={{width: "25%"}}
                         onChange={(event) => this.setState({ searchInput: event.target.value })} // val is user's input
@@ -73,8 +113,10 @@ class ListProducts extends Component {
                     />
                     <IconButton aria-label="search" onClick={this.handleSearch}>
                         <SearchIcon />
-                    </IconButton>  
+                    </IconButton> 
+
                 </div>
+
                 {this.state.showNoResultsMessage && <p style={{textAlign: "center"}}>There are no documents matching your search</p>}
                 {   
                     this.state.products.map(product => (
