@@ -1,0 +1,33 @@
+[
+    {"length":5,
+     "offset":0,
+     "text":"lapto",
+     "options":[
+        {"text":"laptop","score":0.8,"freq":9},{"text":"laptops","score":0.6,"freq":2},
+        {"text":"latte","score":0.6,"freq":1},{"text":"last","score":0.5,"freq":1},
+        {"text":"lypo","score":0.5,"freq":1}
+        ]
+    }, 
+    {"length":5,
+    "offset":0,
+    "text":"lapto",
+    "options":[
+        {"text":"laptop","score":0.8,"freq":9},
+        {"text":"laptops","score":0.6,"freq":2},
+        {"text":"latte","score":0.6,"freq":1},
+        {"text":"last","score":0.5,"freq":1},
+        {"text":"lypo","score":0.5,"freq":1}
+        ]
+    }
+    {"length":5,
+     "offset":6,
+     "text":"caove",
+     "options":[
+        {"text":"cable","score":0.6,"freq":27},
+        {"text":"cover","score":0.6,"freq":18},
+        {"text":"case","score":0.5,"freq":19},
+        {"text":"care","score":0.5,"freq":8},
+        {"text":"code","score":0.5,"freq":5}
+        ]
+    }
+]
