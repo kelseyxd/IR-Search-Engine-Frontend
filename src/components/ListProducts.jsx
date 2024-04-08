@@ -24,8 +24,8 @@ class ListProducts extends Component {
 
         if (searchInput != ""){
             ProductService.searchProduct(searchInput, 1).then(response => { 
-                console.log(response.data);
-                // console.log(response.data.products.length)
+                // console.log(response.data);
+                // console.log(response.data.length)
                 if (response.data.products.length === 0) {
                     this.setState({ products: [], currentPage: 1, showNoResultsMessage: true }); // Update state to show no results message
                 } else {
@@ -51,10 +51,11 @@ class ListProducts extends Component {
         console.log('Searching for:', searchInput);
 
         ProductService.searchProductCat(searchInput, 1).then(response => { 
-            if (response.data.products.length === 0) {
+            if (response.data.length === 0) {
                 this.setState({ products: [], currentPage: 1, showNoResultsMessage: true }); // Update state to show no results message
             } else {
-                this.setState({ products: response.data.products, currentPage: 1, showNoResultsMessage: false }); // Update state with products and hide no results message
+                console.log(response.data)
+                this.setState({ products: response.data, currentPage: 1, showNoResultsMessage: false }); // Update state with products and hide no results message
             } 
         })
 
