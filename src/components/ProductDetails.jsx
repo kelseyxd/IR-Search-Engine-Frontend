@@ -57,14 +57,14 @@ const ProductDetails = () => {
             <div className='reviewsSection'>
                 {/* Header */}
                 <div className="review-header row mb-2">
-                    <div className="col-6"><strong>Reviews</strong></div>
+                    <div className="col-7"><strong>Reviews</strong></div>
                     <div className="col-2"><strong>Date</strong></div>
-                    <div className="col-2"><strong>Country</strong></div>
+                    <div className="col-1"><strong>Country</strong></div>
                     <div className="col-1"><strong>Rating</strong></div>
                     <div className="col-1"><strong>Sentiment</strong></div>
                 </div>
                 <div className="review-header row mb-2">
-                    <div className="col-6"></div>
+                    <div className="col-7"></div>
                     <div className="col-2">
                         {/* Date Range Filters */}
                         <div className="date-filters">
@@ -77,7 +77,7 @@ const ProductDetails = () => {
                             <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                         </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col-1">
                         {/* Country Filter Dropdown */}
                         <select style={{marginTop: '24px'}} value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)}>
                             {uniqueCountries.map(country => (
@@ -91,9 +91,9 @@ const ProductDetails = () => {
                 {filteredReviews.map(review => (
                     <div key={review.id} className="row mb-3">
                         <hr />
-                        <div className="col-6"><p>{review.content}</p></div>
+                        <div className="col-7"><p>{review.content}</p></div>
                         <div className="col-2"><p>{review.date}</p></div>
-                        <div className="col-2"><p>{review.country}</p></div>
+                        <div className="col-1"><p>{review.country}</p></div>
                         <div className="col-1"><p>{review.rating}</p></div>
                         <div className="col-1">{renderSentimentIcon(review.sentiment)}</div>
                     </div>
