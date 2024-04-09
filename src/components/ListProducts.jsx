@@ -4,6 +4,7 @@ import ProductService from '../services/ProductService';
 import { Pagination, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom'; // Import Link
+import webLogo from '../web_logo.png';
 
 class ListProducts extends Component {
 
@@ -145,9 +146,10 @@ class ListProducts extends Component {
         const { searchInput } = this.state;
         return (
             <div className="row" style={{ margin: "80px 50px 20px 50px"}}>
-
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                    <img style={{width: '10%'}} src={webLogo} />
+                </div>
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px"}}>       
-                    
                     {/* Category Dropdown Search */}
                     <select
                         style={{ marginRight: "20px", padding: "7px" }}
