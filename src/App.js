@@ -11,7 +11,7 @@ function App() {
       <div className="App">
         <Routes> 
           <Route path="/" element={<ListProducts />} />
-          <Route path="/product/:product_id/:price" element={<ProductDetails />} /> {/* ':product_id:' This part is dynamic. Whatever value is in this segment of the URL after ':' will be passed to the ProductDetails component as a prop named product_id.  */}
+          <Route path="/product/:product_id/:price/:category" element={<ProductDetails />} /> {/* ':product_id:' This part is dynamic. Whatever value is in this segment of the URL after ':' will be passed to the ProductDetails component as a prop named product_id.  */}
           
 
         </Routes>

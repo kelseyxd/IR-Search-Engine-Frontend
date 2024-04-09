@@ -6,9 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 
 const ProductDetails = () => {
-    const { product_id, price } = useParams();
+    const { product_id, price, category } = useParams();
     const [reviews, setReviews] = useState([]);
     const [product, setProduct] = useState([]);
+    const [image, setImage] = useState("");
     const [selectedCountry, setSelectedCountry] = useState('All');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -18,9 +19,11 @@ const ProductDetails = () => {
             if (response.data.length > 0) {
                 setReviews(response.data[0]['reviews']);
                 setProduct(response.data[0]['product_title']);
+                setImage(response.data[0]['image'])
             } else {
                 setReviews([]);
                 setProduct([]);
+                setImage("");
             }
         });
     }, [product_id]);
@@ -47,9 +50,10 @@ const ProductDetails = () => {
     return (
         <div className='productDetails'>
             <h5>{product}</h5>
-            <img className="img-fluid" alt="Product" src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-15-9530/media-gallery/touch-black/notebook-xps-15-9530-t-black-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&hei=402&wid=654&qlt=100,1&resMode=sharp2&size=654,402&chrss=full"/>
+            <img className="img-fluid" alt="Product" src={image !== "" ? image : "https://st4.depositphotos.com/14953852/24787/v/450/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}/>
             <p><strong>Price: </strong>${price}</p>
-            
+            <p><strong>Category: </strong>{category}</p>
+
             <div className='reviewsSection'>
                 {/* Header */}
                 <div className="review-header row mb-2">
