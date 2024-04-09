@@ -25,44 +25,75 @@ class ListProducts extends Component {
     handleSearch = () => {
         const { searchInput } = this.state;
         console.log('Searching for:', searchInput);
-
+    
         if (searchInput !== "") {
             ProductService.searchProduct(searchInput, 1).then(response => {
                 console.log(response.data);
-                if (response.data.products.length === 0) {
-                    let searchInputWords = searchInput.split(" ");
-                    let suggestionWords = [];
-                    // get top suggestion
-                    let suggestions = response.data.suggestions
-                    for (let i=0; i<suggestions.length; i++) {
-                        if (suggestions[i].options.length === 0) {
-                            suggestionWords.push(searchInputWords[i])
-                        } else {
-                            console.log(suggestions[i].options[0])
-                            suggestionWords.push(suggestions[i].options[0].text)
+                const productsFound = response.data.products.length > 0;
+                let suggestionString = searchInput; // Default to original input
+                let showSuggestions = false;
+    
+                // Process suggestions if any
+                const inputWords = searchInput.split(' ');
+                suggestionString = inputWords.map((word, wordIndex) => {
+                    // Attempt to find a suggestion for the current word
+                    const currentSuggestion = response.data.suggestions.find(suggestion => suggestion.text.toLowerCase() === word.toLowerCase());
+                    if (currentSuggestion && currentSuggestion.options.length > 0) {
+                        // Find the best option based on score, assuming options are already sorted by score and frequency
+                        const bestOption = currentSuggestion.options.find(option => option.score >= 0.5);
+                        // Decide to show suggestions if any option has a score >= 0.75
+                        if (bestOption) {
+                            showSuggestions = true;
+                            return bestOption.text; // Use the suggested word
                         }
                     }
-
-                    this.setState({ 
-                        products: [], 
-                        currentPage: 1, 
-                        showNoResultsMessage: true, 
-                        searchSuggestions: suggestionWords.join(' ') // Update to handle suggestions
-                    });
-                } else {
-                    this.setState({ 
-                        products: response.data.products, 
-                        currentPage: 1, 
-                        showNoResultsMessage: false, 
-                        searchSuggestions: [] // Clear suggestions if products are found
-                    });
-                }
+                    return word; // No suitable suggestion found, use the original word
+                }).join(' ');
+    
+                this.setState({ 
+                    products: productsFound ? response.data.products : [], 
+                    currentPage: 1, 
+                    showNoResultsMessage: !productsFound, 
+                    searchSuggestions: showSuggestions ? suggestionString : ''
+                });
             });
-
+    
             this.setState({categoryInput: ""})
             this.getPageCount();
         }
     };
+    
+    
+    
+
+    // handleSearch = () => {
+    //     const { searchInput } = this.state;
+    //     console.log('Searching for:', searchInput);
+
+    //     if (searchInput !== "") {
+    //         ProductService.searchProduct(searchInput, 1).then(response => {
+    //             console.log(response.data);
+    //             if (response.data.products.length === 0) {
+    //                 this.setState({ 
+    //                     products: [], 
+    //                     currentPage: 1, 
+    //                     showNoResultsMessage: true, 
+    //                     searchSuggestions: suggestionWords.join(' ') // Update to handle suggestions
+    //                 });
+    //             } else {
+    //                 this.setState({ 
+    //                     products: response.data.products, 
+    //                     currentPage: 1, 
+    //                     showNoResultsMessage: false, 
+    //                     searchSuggestions: [] // Clear suggestions if products are found
+    //                 });
+    //             }
+    //         });
+
+    //         this.setState({categoryInput: ""})
+    //         this.getPageCount();
+    //     }
+    // };
 
     handleCategoryChange = (event) => {
         const category = event.target.value;
@@ -234,22 +265,20 @@ class ListProducts extends Component {
                 </div>
                 
                 <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", height: '100%' }}>
-                {this.state.showNoResultsMessage && 
-                    <>
+                    {this.state.showNoResultsMessage && 
                         <p style={{ fontWeight: "bold" }}>There are no products matching your search.</p>
-                        {this.state.searchSuggestions.length > 0 && (
-                            <div style={{ textAlign: "center" }}>
-                                <span>Did you mean: </span>
-                                <button
-                                    style={{ margin: "0 5px", border: "none", background: "none", color: "blue", cursor: "pointer" }}
-                                    onClick={() => this.setState({ searchInput: this.state.searchSuggestions }, this.handleSearch)}
-                                >
-                                    {this.state.searchSuggestions}
-                                </button>
-                            </div>
-                        )}
-                    </>
-                }
+                    }
+                    {this.state.searchSuggestions.length > 0 && (
+                        <div style={{ textAlign: "center", marginBottom: "50px" }}>
+                            <span>Did you mean: </span>
+                            <button
+                                style={{ margin: "0 5px", border: "none", background: "none", color: "blue", cursor: "pointer" }}
+                                onClick={() => this.setState({ searchInput: this.state.searchSuggestions }, this.handleSearch)}
+                            >
+                                {this.state.searchSuggestions}
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 {   
