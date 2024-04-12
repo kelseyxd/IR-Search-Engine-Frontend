@@ -18,7 +18,8 @@ class ListProducts extends Component {
             currentPage: 1,
             pageCount: 0,
             showNoResultsMessage: false,
-            searchSuggestions: ''
+            searchSuggestions: '',
+            queyExecTime: 0
         }
     }
 
@@ -42,7 +43,12 @@ class ListProducts extends Component {
         console.log('Searching for:', searchInput);
     
         if (searchInput !== "") {
+            const startTime = performance.now() // query start time 
             ProductService.searchProduct(searchInput, 1).then(response => {
+                const endTime = performance.now(); // Query end time
+                const execTime = (endTime - startTime).toFixed(2);
+                this.setState({ queryExecTime: execTime });
+
                 console.log(response.data);
                 const productsFound = response.data.products.length > 0;
                 let suggestionString = searchInput; // Default to original input
@@ -123,7 +129,12 @@ class ListProducts extends Component {
         const { categoryInput } = this.state; 
         console.log('Searching for:', categoryInput);
 
+        const startTime = performance.now() // query start time 
         ProductService.searchProductCat(categoryInput, 1).then(response => { 
+            const endTime = performance.now(); // Query end time
+            const execTime = (endTime - startTime).toFixed(2);
+            this.setState({ queryExecTime: execTime });
+
             if (response.data.length === 0) {
                 this.setState({ products: [], currentPage: 1, showNoResultsMessage: true }); // Update state to show no results message
             } else {
@@ -190,6 +201,8 @@ class ListProducts extends Component {
 
     render() {
         const { searchInput } = this.state;
+        const {queryExecTime } = this.state;
+        
         return (
             <div className="row" style={{ margin: "80px 50px 20px 50px"}}>
                 <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
@@ -276,8 +289,16 @@ class ListProducts extends Component {
                     <IconButton aria-label="search" onClick={this.handleSearch}>
                         <SearchIcon />
                     </IconButton> 
-
+                    
                 </div>
+                
+                {/* Search Results and Time Display */}
+                {this.state.products.length > 0 &&
+                    <div style={{marginLeft:'70px', marginBottom: '10px'}}>
+                        <p>Query execution time: {queryExecTime}ms</p>
+                    </div>
+                }
+
                 
                 <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", height: '100%' }}>
                     {this.state.showNoResultsMessage && 
