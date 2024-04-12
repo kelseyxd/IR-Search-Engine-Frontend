@@ -44,6 +44,21 @@ const ProductDetails = () => {
         }
     };
 
+    const reviewSummary = (reviews) => {
+        let counts = { 'positive': 0, 'negative': 0, 'neutral': 0 };
+        reviews.forEach(review => {
+            counts[review.sentiment] += 1;
+        });
+
+        return (
+            <span>
+                <span style={{ color: 'red' }}>{counts.negative} negative</span> / 
+                <span style={{ color: ' green'}}> {counts.positive} positive</span> / 
+                <span style={{ color: 'rgb(255, 175, 0)'}}> {counts.neutral} neutral</span>
+            </span>
+        );    
+    };
+
     // Extract a unique list of countries for the filter dropdown
     const uniqueCountries = ['All', ...new Set(reviews.map(review => review.country))];
 
@@ -58,12 +73,14 @@ const ProductDetails = () => {
         });
     }
 
+
     return (
         <div className='productDetails'>
             <h5>{product}</h5>
             <img className="img-fluid" alt="Product" src={image !== "" ? image : "https://st4.depositphotos.com/14953852/24787/v/450/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}/>
             <p><strong>Price: </strong>${price}</p>
             <p><strong>Category: </strong>{category}</p>
+            <p><strong>Reviews: </strong>{reviewSummary(reviews)}</p>
 
             <div className='reviewsSection'>
                 {/* Header */}

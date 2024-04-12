@@ -22,6 +22,21 @@ class ListProducts extends Component {
         }
     }
 
+    reviewSummary(reviews) {
+        let counts = { 'positive': 0, 'negative': 0, 'neutral': 0 };
+        reviews.forEach(review => {
+            counts[review.sentiment] += 1;
+        });
+
+        return (
+            <span>
+                <span style={{ color: 'red' }}>{counts.negative} negative</span> / 
+                <span style={{ color: ' green'}}> {counts.positive} positive</span> / 
+                <span style={{ color: 'rgb(255, 175, 0)'}}> {counts.neutral} neutral</span>
+            </span>
+        );    
+    }
+
     handleSearch = () => {
         const { searchInput } = this.state;
         console.log('Searching for:', searchInput);
@@ -290,7 +305,8 @@ class ListProducts extends Component {
                                 </div>
                                 <div className="col-8">
                                     <h5 style={{textAlign : "left"}}>{product.product_title}</h5>
-                                    <p style={{textAlign : "left"}}>Category: {product.product_category}</p>
+                                    <p style={{textAlign : "left", fontSize: '17px'}}>Category: {product.product_category}</p>
+                                    <p style={{fontSize: '17px'}}>Reviews: {this.reviewSummary(product.reviews)}</p>
                                 </div>
                                 <div className="col-1">
                                     <p style={{textAlign : "left", marginTop: '60px'}}>${product.price}</p>
