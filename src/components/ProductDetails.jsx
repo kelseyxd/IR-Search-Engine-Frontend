@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductService from '../services/ProductService';
 import './ProductDetails.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import neutral from '../images/neutral.jpg';
+import negative from '../images/negative.jpg';
+import positive from '../images/positive.jpg';
 
 const ProductDetails = () => {
     const { product_id, price, category } = useParams();
@@ -20,6 +21,7 @@ const ProductDetails = () => {
                 setReviews(response.data[0]['reviews']);
                 setProduct(response.data[0]['product_title']);
                 setImage(response.data[0]['image'])
+
             } else {
                 setReviews([]);
                 setProduct([]);
@@ -30,7 +32,16 @@ const ProductDetails = () => {
 
     // Function to render sentiment icon
     const renderSentimentIcon = (sentiment) => {
-        return sentiment === 0 ? <FontAwesomeIcon icon={faThumbsDown} /> : <FontAwesomeIcon icon={faThumbsUp} />;
+        switch (sentiment) {
+            case "neutral":
+                return <img src={neutral} alt="Neutral" style={{ width: '24px', height: '24px' }} />;
+            case "negative":
+                return <img src={negative} alt="Negative" style={{ width: '24px', height: '24px' }} />;
+            case "positive":
+                return <img src={positive} alt="Positive" style={{ width: '24px', height: '24px' }} />;
+            default:
+                return null; // or any other default case
+        }
     };
 
     // Extract a unique list of countries for the filter dropdown
@@ -89,7 +100,7 @@ const ProductDetails = () => {
                     <div className="col-1"></div>
                 </div>
                 {filteredReviews.map(review => (
-                    <div key={review.id} className="row mb-3">
+                    <div key={review.review_id} className="row mb-3">
                         <hr />
                         <div className="col-7"><p>{review.content}</p></div>
                         <div className="col-2"><p>{review.date}</p></div>
