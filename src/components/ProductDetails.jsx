@@ -80,12 +80,11 @@ const ProductDetails = () => {
             <img className="img-fluid" alt="Product" src={image !== "" ? image : "https://st4.depositphotos.com/14953852/24787/v/450/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"}/>
             <p><strong>Price: </strong>${price}</p>
             <p><strong>Category: </strong>{category}</p>
-            <p><strong>Reviews: </strong>{reviewSummary(reviews)}</p>
 
             <div className='reviewsSection'>
                 {/* Header */}
                 <div className="review-header row mb-2">
-                    <div className="col-7"><strong>Reviews</strong></div>
+                    <div className="col-7"><strong>Reviews {reviewSummary(reviews)}</strong></div>
                     <div className="col-2"><strong>Date</strong></div>
                     <div className="col-1"><strong>Country</strong></div>
                     <div className="col-1"><strong>Rating</strong></div>
