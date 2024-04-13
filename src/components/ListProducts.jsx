@@ -19,7 +19,7 @@ class ListProducts extends Component {
             pageCount: 0,
             showNoResultsMessage: false,
             searchSuggestions: '',
-            queyExecTime: 0
+            queryExecTime: 0
         }
     }
 
@@ -302,7 +302,12 @@ class ListProducts extends Component {
                 
                 <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", height: '100%' }}>
                     {this.state.showNoResultsMessage && 
-                        <p style={{ fontWeight: "bold" }}>There are no products matching your search.</p>
+                        <div>
+                            <div style={{marginLeft:'70px', marginBottom: '10px'}}>
+                                <p>Query execution time: {queryExecTime}ms</p>
+                            </div>
+                            <p style={{ fontWeight: "bold" }}>There are no products matching your search.</p>
+                        </div>
                     }
                     {this.state.searchSuggestions.length > 0 && (
                         <div style={{ textAlign: "center", marginBottom: "50px" }}>
